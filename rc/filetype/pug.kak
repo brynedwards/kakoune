@@ -1,14 +1,10 @@
-# Note: jade is changing its name to pug (https://github.com/pugjs/pug/issues/2184)
-# This appears to be a work in progress -- the pug-lang domain is parked, while
-# the jade-lang one is active. This highlighter will recognize .pug and .jade extensions,
-
-# http://jade-lang.com (will be http://pug-lang.com)
+# http://pugjs.org
 # ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 
 # Detection
 # ‾‾‾‾‾‾‾‾‾
 
-hook global BufCreate .*[.](pug|jade) %{
+hook global BufCreate .*[.](pug) %{
     set-option buffer filetype pug
 }
 
@@ -36,26 +32,19 @@ provide-module pug %{
 # ‾‾‾‾‾‾‾‾‾‾‾‾
 
 add-highlighter shared/pug regions
-add-highlighter shared/pug/code          default-region group
-add-highlighter shared/pug/text          region ^\h*\|\s     $                      regex   \h*(\|) 1:meta
-add-highlighter shared/pug/text2         region '^\h*([A-Za-z][A-Za-z0-9_-]*)?(#[A-Za-z][A-Za-z0-9_-]*)?((?:\.[A-Za-z][A-Za-z0-9_-]*)*)?(?<!\t)(?<! )(?<!\n)\h+\K.*' $ regex   \h*(\|) 1:meta
-add-highlighter shared/pug/javascript    region ^\h*[-=!]    $                      ref javascript
-add-highlighter shared/pug/double_string region '"'          (?:(?<!\\)(\\\\)*"|$)  fill string
-add-highlighter shared/pug/single_string region "'"          (?:(?<!\\)(\\\\)*'|$)  fill string
-add-highlighter shared/pug/comment       region //           $                      fill comment
-add-highlighter shared/pug/attribute     region -recurse \( \(            \)        group
-add-highlighter shared/pug/puglang       region ^\h*\b(\block|extends|include|append|prepend|if|unless|else|case|when|default|each|while|mixin)\b $ group
+add-highlighter shared/pug/text          default-region                                                 group
+add-highlighter shared/pug/tag           region ^\h*(#?|\.?)[a-zA-Z0-9_-]+#?(\.[a-zA-Z0-9_-]+)? (\s|\() group
+add-highlighter shared/pug/double_string region '"'  (?:(?<!\\)(\\\\)*"|$)                              fill string
+add-highlighter shared/pug/single_string region "'"  (?:(?<!\\)(\\\\)*'|$)                              fill string
+add-highlighter shared/pug/comment       region '//' '$'                                                fill comment
+add-highlighter shared/pug/attribute     region \(   \)                                                 group
 
-# Filters
-# ‾‾‾‾‾‾‾
+add-highlighter shared/pug/tag/ regex \b([a-zA-Z0-9_-]+)\b 1:keyword
+add-highlighter shared/pug/tag/ regex (#[a-zA-Z0-9_-]+)\b  1:meta
+add-highlighter shared/pug/tag/ regex (\.[a-zA-Z0-9_-]+)   1:attribute
+add-highlighter shared/pug/tag/ regex \b(\block|extends|include|append|prepend|if|unless|else|case|when|default|each|while|mixin|of|in)\b 0:keyword
 
-add-highlighter shared/pug/attribute/       ref     javascript
-add-highlighter shared/pug/attribute/       regex   [()=]                             0:operator
-add-highlighter shared/pug/puglang/         ref     javascript
-add-highlighter shared/pug/puglang/         regex   \b(\block|extends|include|append|prepend|if|unless|else|case|when|default|each|while|mixin|of|in)\b 0:keyword
-add-highlighter shared/pug/code/            regex   ^\h*([A-Za-z][A-Za-z0-9_-]*)      1:type
-add-highlighter shared/pug/code/            regex   '(#[A-Za-z][A-Za-z0-9_-]*)'       1:variable
-add-highlighter shared/pug/code/            regex   ((?:\.[A-Za-z][A-Za-z0-9_-]*)*)   1:value
+add-highlighter shared/pug/attribute/ regex '.*' 1:attribute
 
 # Commands
 # ‾‾‾‾‾‾‾‾
