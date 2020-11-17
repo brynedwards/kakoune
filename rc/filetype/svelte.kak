@@ -22,10 +22,15 @@ hook -group svelte-highlight global WinSetOption filetype=(svelte) %{
 }
 
 add-highlighter shared/svelte regions
-add-highlighter shared/svelte/comment region <!--     -->                  fill comment
-add-highlighter shared/svelte/tag     region <          >                  regions
-add-highlighter shared/svelte/style   region <style\b.*?>\K  (?=</style>)  ref css
-add-highlighter shared/svelte/script  region <script\b.*?>\K (?=</script>) ref javascript
+add-highlighter shared/svelte/comment region <!--     -->                                   fill comment
+add-highlighter shared/svelte/tag     region <          >                                   regions
+add-highlighter shared/svelte/style   region <style\b.*?>\K  (?=</style>)                   ref css
+add-highlighter shared/svelte/script  region <script\b.*?>\K (?=</script>)                  ref javascript
+add-highlighter shared/svelte/pug     region <template\b.*?lang="pug".*?>\K (?=</template>) ref pug
+add-highlighter shared/svelte/scss    region <style\b.*?lang="scss".*?>\K   (?=</style>)    ref scss
+add-highlighter shared/svelte/sass    region <style\b.*?lang="sass".*?>\K   (?=</style>)    ref sass
+add-highlighter shared/svelte/less    region <style\b.*?lang="less".*?>\K   (?=</style>)    ref less
+add-highlighter shared/svelte/ts      region <script\b.*?lang="ts".*?>\K    (?=</script>)   ref typescript
 
 add-highlighter shared/svelte/block region \{((#|:|/)\w+)? \} regions
 add-highlighter shared/svelte/block/ default-region fill meta
